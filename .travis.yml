@@ -1,0 +1,79 @@
+sudo: false
+language: php
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+env:
+    global:
+        - WP_TESTS_DIR=/tmp/wordpress-tests-lib
+        - CC_TEST_REPORTER_ID=9f73723e3648ba2a830bd1449ec2c21033771ca7f5d8c159bf27ebca41f4d20d
+
+matrix:
+  include:
+    - php: 7.2
+      env: WP_VERSION=latest
+      dist: trusty
+    - php: 7.2
+      env: "WP_VERSION=latest CODECOV=true"
+      dist: trusty
+    - php: 7.2
+      env: WP_VERSION=4.8
+      dist: trusty
+    - php: 7.1
+      env: WP_VERSION=latest
+      dist: trusty
+    - php: 7.0
+      env: WP_VERSION=latest
+      dist: trusty
+    - php: 5.6
+      env: WP_VERSION=4.4
+      dist: trusty
+    - php: 5.6
+      env: WP_VERSION=latest
+      dist: trusty
+    - php: 5.6
+      env: WP_VERSION=trunk
+      dist: trusty
+fast_finish: true
+
+before_script:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [[ ! "$CODECOV" ]] ; then
+      if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+        phpenv config-rm xdebug.ini
+      else
+        echo "xdebug.ini does not exist"
+      fi
+    else
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      chmod +x ./cc-test-reporter
+      ./cc-test-reporter before-build
+    fi
+  - composer install
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+    fi
+
+script:
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit
+      WP_MULTISITE=1 phpunit
+    fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+  slack:
+    secure: BuxbWZmhmdSIs1sXblUpG38Yw30YB+lZWTlslFtkYBi8Y0IGsgLBg5iMVg753eCWNQIIG92i/rntf1BG1ZyxiEFkd+2ZZxlPJ1Mgdp3LkWwS4qnZvr6OnpnxcGmpBsE8srnwhzziHvb9IlhBFW5G3CwCuKZJef/ftNI7wLBjRH0=
