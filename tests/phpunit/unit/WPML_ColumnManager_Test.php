@@ -17,7 +17,7 @@ class WPML_ColumnManager_Test extends \PHPUnit_Framework_TestCase {
     private $mail;
     private $item;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->columnManager = new WPML_ColumnManager();
 
         $exampleAttachment1 = WP_CONTENT_DIR . '/uploads/2018/05/file.pdf';

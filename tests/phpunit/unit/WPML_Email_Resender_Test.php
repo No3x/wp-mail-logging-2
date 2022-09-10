@@ -20,7 +20,7 @@ class WPML_Email_Resender_Test extends \PHPUnit_Framework_TestCase {
     /** @var \No3x\WPML\Model\WPML_Mail|\PHPUnit_Framework_MockObject_MockObject $mailMock */
     private $mailMock;
 
-    function setUp() {
+    function setUp() : void {
         parent::setUp();
         $this->dispatcherMock = self::getMockBuilder('No3x\WPML\WPML_Email_Dispatcher')
             ->disableOriginalConstructor()

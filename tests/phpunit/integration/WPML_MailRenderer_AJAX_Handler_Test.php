@@ -18,7 +18,7 @@ class WPML_MailRenderer_AJAX_Handler_Test extends \WP_Ajax_UnitTestCase {
     private $mailRendererAjaxHandler;
     private $valid_id = 2;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
 
         $this->mailRendererMock = Mockery::mock('No3x\WPML\Renderer\WPML_MailRenderer');
