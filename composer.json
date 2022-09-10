@@ -6,11 +6,13 @@
     "homepage": "https://github.com/kgjerstad/wp-mail-logging",
     "require": {
         "php": ">=7.1",
-        "redux-framework/redux-framework": "4.3.9"
+        "redux-framework/redux-framework": "4.3.9",
+        "phpunit/phpunit": "6.*.*"
     },
     "require-dev": {
         "bocharsky-bw/arrayzy": "v0.1.1",
-        "mockery/mockery": "^0.9.9"
+        "mockery/mockery": "^0.9.9",
+        "yoast/phpunit-polyfills": "1.x-dev"
     },
     "license": "GPL-2.0",
     "authors": [
