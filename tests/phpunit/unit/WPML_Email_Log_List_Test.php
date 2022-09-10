@@ -14,7 +14,7 @@ class WPML_Email_Log_List_Test extends \PHPUnit_Framework_TestCase {
     private $item;
     private $item_id;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->logListTable = new WPML_Email_Log_List(null);
 
         $this->item_id = 2;

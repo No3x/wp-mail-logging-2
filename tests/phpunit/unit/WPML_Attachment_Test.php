@@ -10,7 +10,7 @@ class WPML_Attachment_Test extends \PHPUnit_Framework_TestCase {
     /** @var $fsMock \No3x\WPML\FS\IFilesystem |\Mockery\MockInterface */
     private $fsMock;
 
-    function setUp()
+    function setUp() : void
     {
         parent::setUp();
 

@@ -16,7 +16,7 @@ class WPML_MailExtractor_Test extends \PHPUnit_Framework_TestCase {
     /** @var WPML_MailExtractor */
     private $mailExtractor;
 
-    function setUp() {
+    function setUp() : void {
         parent::setUp();
         $this->mailExtractor = new WPML_MailExtractor();
     }

@@ -9,7 +9,7 @@ use No3x\WPML\WPML_Plugin;
  * @package No3x\WPML\Tests\Helper
  * @group ignore
  */
-class WPML_IntegrationTestCase extends \WP_UnitTestCase {
+abstract class WPML_IntegrationTestCase extends \WP_UnitTestCase {
 
 	/** @var WPML_Plugin */
 	private $plugin;
@@ -21,7 +21,7 @@ class WPML_IntegrationTestCase extends \WP_UnitTestCase {
 		return $this->plugin;
 	}
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 
 		$this->plugin = apply_filters('wpml_get_di_service', 'plugin' );
@@ -31,7 +31,7 @@ class WPML_IntegrationTestCase extends \WP_UnitTestCase {
 		}
 	}
 
-	function tearDown() {
+	function tearDown(): void {
 		parent::tearDown();
 	}
 }

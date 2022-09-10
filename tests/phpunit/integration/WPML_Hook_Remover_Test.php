@@ -10,14 +10,14 @@ class WPML_Hook_Remover_Test extends WPML_IntegrationTestCase {
     private $tag;
     private $callable;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->tag = 'wp_mail';
         $this->callable = [$this, 'callback_function'];
         add_filter( $this->tag, $this->callable );
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         remove_filter( $this->tag, $this->callable );
         parent::tearDown();
     }
