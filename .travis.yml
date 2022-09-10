@@ -13,29 +13,11 @@ env:
 
 matrix:
   include:
-    - php: 7.2
+    - php: 7.3
       env: WP_VERSION=latest
       dist: trusty
-    - php: 7.2
+    - php: 7.4
       env: "WP_VERSION=latest CODECOV=true"
-      dist: trusty
-    - php: 7.2
-      env: WP_VERSION=4.8
-      dist: trusty
-    - php: 7.1
-      env: WP_VERSION=latest
-      dist: trusty
-    - php: 7.0
-      env: WP_VERSION=latest
-      dist: trusty
-    - php: 5.6
-      env: WP_VERSION=4.4
-      dist: trusty
-    - php: 5.6
-      env: WP_VERSION=latest
-      dist: trusty
-    - php: 5.6
-      env: WP_VERSION=trunk
       dist: trusty
 fast_finish: true
 
