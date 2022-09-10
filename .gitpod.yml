@@ -5,3 +5,5 @@ tasks:
   - init: | 
         composer update --lock
         composer install
+        chmod +x bin/*
+        ./bin/run-wp-tests.sh
