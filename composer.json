@@ -37,5 +37,10 @@
             "No3x\\WPML\\Tests\\": "tests/phpunit/tests",
             "No3x\\WPML\\Tests\\Helper\\": "tests/helper"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
