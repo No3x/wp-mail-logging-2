@@ -13,9 +13,9 @@ env:
 
 matrix:
   include:
-    - php: 8.0
-      env: WP_VERSION=latest
-      dist: trusty
+#    - php: 8.0
+#      env: WP_VERSION=latest
+#      dist: trusty
     - php: 7.4
       env: "WP_VERSION=latest CODECOV=true"
       dist: trusty
