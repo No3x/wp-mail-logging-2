@@ -3,4 +3,5 @@ image:
 
 tasks:
   - init: | 
+        composer update --lock
         composer install
