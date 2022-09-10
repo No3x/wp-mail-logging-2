@@ -22,7 +22,7 @@ class WPML_PrivacyController_Test extends \PHPUnit_Framework_TestCase {
     /** @var \No3x\WPML\ORM\Query|\PHPUnit_Framework_MockObject_MockObject $queryMock */
     private $queryMock;
 
-    function setUp() {
+    function setUp() : void {
         parent::setUp();
 
         $this->queryMock = self::getMockBuilder('No3x\WPML\ORM\Query')

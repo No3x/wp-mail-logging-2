@@ -18,7 +18,7 @@ class WPML_MailRenderer_Test extends \PHPUnit_Framework_TestCase {
 
     private $id = 2;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->mailServiceMock = Mockery::mock('No3x\WPML\Model\IMailService');
 
         /** @var $mail WPML_Mail */
@@ -87,29 +87,29 @@ class WPML_MailRenderer_Test extends \PHPUnit_Framework_TestCase {
             ->andReturn( $mail );
 
         $this->mailRenderer = new WPML_MailRenderer($this->mailServiceMock);
-        $this->assertContains("Fallback", $this->mailRenderer->render($this->id, WPML_MailRenderer::FORMAT_JSON));
+        $this->assertStringContainsString("Fallback", $this->mailRenderer->render($this->id, WPML_MailRenderer::FORMAT_JSON));
         $this->mailServiceMock->mockery_verify();
     }
 
     public function test_print_mail_raw() {
         $expected = '<span class="title">Time: </span>2018-09-24 16:02:11<span class="title">Receiver: </span>example@exmple.com<span class="title">Subject: </span>Test<span class="title">Message: </span>&lt;b&gt;Bold&lt;/b&gt;<span class="title">Headers: </span>From: &quot;admin&quot; ,\nCc: example2@example.com,\nReply-To: admin <span class="title">Attachments: </span><span class="title">Error: </span><i class="fa fa-exclamation-circle" title="a"></i>';
         $actual = $this->mailRenderer->render($this->id, WPML_MailRenderer::FORMAT_RAW);
-        $this->assertContains('2018-09-24 16:02:11', $actual, "The timestamp should be in the rendered mail");
-        $this->assertContains('Test', $actual, "The subject should be in the rendered mail");
-        $this->assertContains('&lt;b&gt;Bold&lt;/b&gt;', $actual, "The rendered mail must have html tags (<b>) escaped");
-        $this->assertNotContains('<script>alert(', $actual, "The rendered mail must strip out evil tags to protect against xss");
-        $this->assertNotContains('<i', $actual, "The rendered mail has no icons set because it show the  and attachments raw");
+        $this->assertStringContainsString('2018-09-24 16:02:11', $actual, "The timestamp should be in the rendered mail");
+        $this->assertStringContainsString('Test', $actual, "The subject should be in the rendered mail");
+        $this->assertStringContainsString('&lt;b&gt;Bold&lt;/b&gt;', $actual, "The rendered mail must have html tags (<b>) escaped");
+        $this->assertStringNotContainsString('<script>alert(', $actual, "The rendered mail must strip out evil tags to protect against xss");
+        $this->assertStringNotContainsString('<i', $actual, "The rendered mail has no icons set because it show the  and attachments raw");
     }
 
     public function test_print_mail_html() {
         $expected = '<span class="title">Time: </span>2018-09-24 16:02:11<span class="title">Receiver: </span>example@exmple.com<span class="title">Subject: </span>Test<span class="title">Message: </span><b>Bold</b><span class="title">Headers: </span>From: "admin" ,\nCc: example2@example.com,\nReply-To: admin <span class="title">Attachments: </span><span class="title">Error: </span><i class="fa fa-exclamation-circle" title="a"></i>';
         $actual = $this->mailRenderer->render($this->id, WPML_MailRenderer::FORMAT_HTML);
-        $this->assertContains('2018-09-24 16:02:11', $actual, "The timestamp should be in the rendered mail");
-        $this->assertContains('Test', $actual, "The subject should be in the rendered mail");
-        $this->assertContains('<b>Bold</b>', $actual, "The rendered mail must have html tags (<b>) not escaped");
-        $this->assertNotContains('<script>alert(', $actual, "The rendered mail must strip out evil tags to protect against xss");
-        $this->assertContains('<i class="fa fa-exclamation-circle"', $actual, "The rendered mail has icons for the error returned as html, it must not be escaped");
-        $this->assertContains('<i class="fa fa-times"', $actual, "The rendered mail has icons for the attachments returned as html, it must not be escaped");
+        $this->assertStringContainsString('2018-09-24 16:02:11', $actual, "The timestamp should be in the rendered mail");
+        $this->assertStringContainsString('Test', $actual, "The subject should be in the rendered mail");
+        $this->assertStringContainsString('<b>Bold</b>', $actual, "The rendered mail must have html tags (<b>) not escaped");
+        $this->assertStringNotContainsString('<script>alert(', $actual, "The rendered mail must strip out evil tags to protect against xss");
+        $this->assertStringContainsString('<i class="fa fa-exclamation-circle"', $actual, "The rendered mail has icons for the error returned as html, it must not be escaped");
+        $this->assertStringContainsString('<i class="fa fa-times"', $actual, "The rendered mail has icons for the attachments returned as html, it must not be escaped");
     }
 
     /**
@@ -199,6 +199,20 @@ class WPML_MailRenderer_Test extends \PHPUnit_Framework_TestCase {
                 [
                     "&lt;script&gt;alert('XSS hacking!');&lt;/script&gt;",
                     "alert('XSS hacking!');",
+                ]
+            ],
+            "style alert()" => [
+                "<style onafterscriptexecute=alert('XSS hacking!')><script>1</script>",
+                [
+                    "&lt;style onafterscriptexecute=alert('XSS hacking!')&gt;&lt;script&gt;1&lt;/script&gt;",
+                    "<style>1",
+                ]
+            ],
+            "style alert()" => [
+                "<img src/onerror=alert('XSS hacking!')>",
+                [
+                    "&lt;img src/onerror=alert('XSS hacking!')&gt;",
+                    "<img>",
                 ]
             ],
             "html comment" => [

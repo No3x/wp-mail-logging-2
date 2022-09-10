@@ -9,7 +9,7 @@ class WPML_MessageSanitizer_Test extends \PHPUnit_Framework_TestCase {
     /** @var WPML_MessageSanitizer */
     private $messageSanitizer;
 
-    function setUp() {
+    function setUp() : void {
         parent::setUp();
         $this->messageSanitizer = new WPML_MessageSanitizer();
     }
