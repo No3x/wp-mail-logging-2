@@ -9,7 +9,7 @@
     <php>
     </php>
     <testsuites>
-        <testsuite>
+        <testsuite name="wp-mail-logging Test Suite">
             <directory suffix=".php">tests/phpunit</directory>
         </testsuite>
     </testsuites>
